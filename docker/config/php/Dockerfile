@@ -2,6 +2,8 @@ FROM php:7.2-fpm
 
 MAINTAINER grizmar <grizmar5@gmail.com>
 
+RUN usermod -u 1000 www-data \
+    && groupmod -g 1000 www-data
 RUN chown -R www-data:www-data /var/www/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
@@ -43,6 +45,8 @@ RUN pecl install xdebug \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 ADD php.ini /usr/local/etc/php/conf.d/40-custom.ini
+
+USER www-data
 
 WORKDIR /var/www/
 

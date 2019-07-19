@@ -8,7 +8,7 @@ services:
       - "443:443"
     volumes:
       - ./docker/config/nginx/conf.d:/etc/nginx/conf.d
-      - ./src:/var/www/oxana
+      - ./src:/var/www/olian
       - ./docker/log/nginx:/var/log/nginx/
     links:
       - php
@@ -19,25 +19,17 @@ services:
       - "3309:3306"
     environment:
       - "MYSQL_ROOT_PASSWORD=123456"
-      - "MYSQL_DATABASE=oxana"
-      - "MYSQL_USER=oxana"
+      - "MYSQL_DATABASE=olian"
+      - "MYSQL_USER=olian"
       - "MYSQL_PASSWORD=123456"
     volumes:
       - "./docker/dist/mysql:/var/lib/mysql:delegated"
-
-  postgres:
-    build: docker/config/postgres
-    ports:
-    - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: 123
-    logging:
-      driver: none
+      - ./src:/var/www/olian
 
   php:
     build: docker/config/php
     volumes:
-      - ./src:/var/www/oxana
+      - ./src:/var/www/olian
       - ./xhprof:/var/www/xhprof:delegated
       - ./docker/log/php:/var/log/php/
       - ./docker/dist/profile:/root:delegated
@@ -45,4 +37,3 @@ services:
       - ./docker/dist/php/xdebug/profile:/tmp/xdebug/profile/
     links:
       - mysql
-      - postgres
